@@ -1,11 +1,11 @@
-%% pass -> 0:fail, 1:success, 2:not all vars used
+% varNames (String array): String array of variable names in the student's solution. ["varA","varB"]
+% varargin (reference values/variables): Cell array containg the reference variables.
 
-function [pass, wrong, dupes] = mg_equalsIgnoreOrder(varNames, reference);
+% pass (int) -> 0:fail (wrong values or dupes), 1:success, 2:not all vars used (any variable named in varNames is not used by student)
+% wrong (String array): String array containin variable names with wrong values
+% dupes (String array): String array containin variable names with duplicate values (only correct values that already have been recognized)
 
-    if ~isequal(class(reference),'cell')
-        error("Reference must be a Cell Array!");
-    end
-
+function [pass, wrong, dupes] = mg_equalsIgnoreOrder(varNames, varargin)
 
     checked = {};
     wrong =[];
@@ -29,7 +29,7 @@ function [pass, wrong, dupes] = mg_equalsIgnoreOrder(varNames, reference);
         end
             
         %check if correct
-        if cellContain(reference, varValue)
+        if cellContain(varargin, varValue)
             checked{end+1} = varValue;
         else
             wrong = [wrong, varNames(n)];
@@ -40,6 +40,8 @@ function [pass, wrong, dupes] = mg_equalsIgnoreOrder(varNames, reference);
     pass = (isempty(wrong) & isempty(dupes));
 end
 
+
+% helper to checkt if object is in cell array
 function res = cellContain(cellArray, object)
     if ~isempty(cellArray)
         logicalCell = cellfun(@(x) isequal(x, object), cellArray, 'UniformOutput', false);
