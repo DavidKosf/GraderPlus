@@ -6,8 +6,7 @@
 
 function present = mg_solutionContainsExplicit(statements, varargin)
     
-    %filename = getMGFileName(varargin);
-    filename = "mg_varExist.m";
+    filename = getMGFileName(varargin);
     content = fileread(filename);
     
     %content as lines, remove empty lines
@@ -17,12 +16,11 @@ function present = mg_solutionContainsExplicit(statements, varargin)
     present = false();
     
     for statement = statements
-    
+        
+        %compare expressions found with the ones found in comments
         expressionsFound = regexp(as_lines, statement);
         expressionsCFound = regexp(as_lines, "%.*"+statement);
-        
-        disp(length([expressionsFound{:}]));
-        disp(length([expressionsCFound{:}]));
+
         if length([expressionsFound{:}]) > length([expressionsCFound{:}])
             present = true();
             return
