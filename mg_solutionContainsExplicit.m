@@ -6,10 +6,28 @@
 
 function present = mg_solutionContainsExplicit(statements, varargin)
     
-    filename = getMGFileName(varargin);
+    %filename = getMGFileName(varargin);
+    filename = "mg_varExist.m";
     content = fileread(filename);
     
-    present = contains(content, statements);
+    %content as lines, remove empty lines
+    as_lines = regexp(content, '\r?\n', 'split');
+    as_lines = as_lines(~cellfun('isempty', as_lines));
+    
+    present = false();
+    
+    for statement = statements
+    
+        expressionsFound = regexp(as_lines, statement);
+        expressionsCFound = regexp(as_lines, "%.*"+statement);
+        
+        disp(length([expressionsFound{:}]));
+        disp(length([expressionsCFound{:}]));
+        if length([expressionsFound{:}]) > length([expressionsCFound{:}])
+            present = true();
+            return
+        end
+    end
 end
 
 % Code to get the MATLAB-Grader generated solution file
