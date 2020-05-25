@@ -5,7 +5,8 @@ function data = mg_getPlotInfo()
     handle = gca;
     data = struct;
     %%Title
-    data.title = handle.Title.String;
+    data.title = handle.Title;
+    data.titleString = handle.Title.String;
     
     %%Labels
     data.xLabel = handle.XLabel.String;
@@ -22,6 +23,11 @@ function data = mg_getPlotInfo()
     data.yScale = handle.YScale;
     data.zScale = handle.ZScale;
     
+    %%Grids
+    data.xGrid = isequal(handle.XGrid, 'on');
+    data.yGrid = isequal(handle.YGrid, 'on');
+    data.zGrid = isequal(handle.ZGrid, 'on');
+    
     %%Lines
     data.lines = findobj(gca, 'Type', 'line');
     
@@ -35,9 +41,19 @@ function data = mg_getPlotInfo()
     data.legendAvailable = sum(size(data.legend) > 0) ~= 0;
     
     %%Legend Title
-    data.legendTitle = data.legend.Title.String;
+    try
+        data.legendTitle = data.legend.Title.String;
+    catch
+        data.legendTitle = "";
+    end
+    
     
     %%Legend Text // Order is order of adding graphs
-    data.legendText = data.legend.String;
+    try
+        data.legendText = data.legend.String;
+    catch
+        data.legendText = "";
+    end
+    
 end
 
