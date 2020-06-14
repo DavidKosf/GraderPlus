@@ -10,9 +10,9 @@ function equals = mg_compArrIgnDim(solution, reference)
 
     % Var name given.
     if all(size(solution) == [1,1])
-        % Try to fetch variable. equals = false if it foes not exist.
+        % Try to fetch variable. equals = false if it oes not exist.
         try
-            solution = evalin('caller', solution);
+            solution = evalin('caller', solution)
         catch
             equals = false();
             return

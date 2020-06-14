@@ -21,7 +21,8 @@ function [success] = mg_writeSharedVariables(varargin)
        %evaluate function in caller
        fncCall = "save('mg_sharedvarstorage.mat' " + vars + append +");";
        evalin('caller', fncCall);
-    catch
+    catch ME
+       disp(ME);
         success = false();
     end
 end

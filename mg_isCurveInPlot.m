@@ -62,11 +62,17 @@ function result = mg_isCurveInPlot(varargin)
             return
         end
         
-        if all(value == desiredValue) == 0
-            isCorrect = 0;
+        % Double array? -> tolerance
+        if isequal(class(desiredValue),'double') && isequal(class(value),'double')
+            isCorrect = all(abs(desiredValue-value) < 0.01);
         else
-            isCorrect = 1;
+            if all(value == desiredValue) == 0
+                isCorrect = 0;
+            else
+                isCorrect = 1;
+            end 
         end
+        
     end
 
 

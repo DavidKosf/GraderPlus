@@ -8,9 +8,8 @@ function [pass, missing] = mg_equalsStrictOrder(varNames)
     for var = varNames
         
         try
-            fncCall = "assessVariableEqual('" + var + "', referenceVariables."+var+");"
-            disp(var)
-            disp(evalin('caller', fncCall));
+            fncCall = "assessVariableEqual('" + var + "', referenceVariables."+var+");";
+            evalin('caller', fncCall)
         catch
             pass = false();
             missing = [missing, var];
