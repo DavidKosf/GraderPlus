@@ -1,7 +1,31 @@
-% varargin (any var type): input values for student function 
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_evalStudentFunction
+%
+%Description:
+%     Finds and evaluates the solution function for given inputs.
+%     If input and output amounts (except the pass output) are not equal, pass wil be false
+% 
+% Inputs:
+%     varargin
+%         Inputs to the solution function.
+%         
+%Outputs:
+%     pass
+%         true if in- and output amount are equal or the function was executable
+%     varargout
+%         return values of the function
 
-% pass (logical): logical 0/1 if test is passed
-% varargout (any var type): return values of student function in the order the student defined them
 
 function [pass, varargout] = mg_evalStudentFunction(varargin)
     

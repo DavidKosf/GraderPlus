@@ -1,9 +1,35 @@
-% keywords (string array): keywords to check for using ML-Grader functions
-% varargin (strings): ignore matlab files used by grader containing any of the given
-% strings. Use this, if you upload own scripts/functions
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_keywordPresent
+%
+%Description:
+%   This function uses the given keyword check in ML Grader and extends it 
+%   to multiple keywords. If all are present the result is true.
+%
+%Inputs:
+%     keywords (string array)
+%         Collection of strings that shall be in the the solution. Every string
+%         has to be used at least once.
+%     varargin (strings / char arrays)
+%         Function and script names (excluding .m) that shall be ignored. Use this
+%         to prevent your uploaded files from beeing scanned.
+% 
+% Outputs:
+%     allPresent (bool)
+%         Indicates if all keywords were present.
+%     missing (string array)
+%         Returns missing keywords. Empty if all were used.
 
-% allPresent (logical): logical 1/0 if all given keywords are used
-% missing (string array): missing keywords
 
 
 function [allPresent, missing] = mg_keywordPresent(keywords, varargin)
@@ -11,8 +37,10 @@ function [allPresent, missing] = mg_keywordPresent(keywords, varargin)
     allPresent = 1;
     missing = [];
     
+    % Get the generated solution file
     filename = getMGFileName(varargin);
 
+    %Loop using the ML Grader given function
     for keyword = keywords
         
         try

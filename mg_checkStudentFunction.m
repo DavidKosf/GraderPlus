@@ -1,23 +1,52 @@
-% inputs (int): Amount of inputs the student's function should have
-% outputs (int): Amount of inputs the student's function should have
-
-% pass (int): 0 -> wrong number of inputs
-% pass (int): 1 -> pass
-% pass (int): 2 -> wrong number of outputs
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_checkStudentFunction
+%
+%Description:
+%     This function checks if a solution is a function and has a desired number of in- and outputs
+%     Returns the function name
+%     Similar to mg_getStudentFunction
+%
+% Inputs:
+%     inputs (int)
+%         Amount of desired inputs
+%     outputs (int)
+%         Amount of desired outputs
+%         
+%Outputs:
+%   result (bool)
+%       0
+%             No solution function fitting the number of in- and outputs was found.
+%       1
+%             Fitting solution was found.
 
 function pass = mg_checkStudentFunction(inputs, outputs)
     
     filename = getMGFileName();
     fncname = filename(1:end-2);
     
-    %compare inputs
-    if nargin(fncname) ~= inputs
+    try
+        %compare inputs
+        if evalin('caller', ['nargin("', fncname ,'")']) ~= inputs
+            pass = 0;
+        %compare outputs
+        elseif evalin('caller', ['nargout("', fncname ,'")']) ~= outputs
+            pass = 2;
+        else
+            pass = 1;
+        end
+    catch
         pass = 0;
-    %compare outputs
-    elseif nargout(fncname) ~= outputs
-        pass = 2;
-    else
-        pass = 1;
     end
 end
 

@@ -1,3 +1,45 @@
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%ONLY FOR SCRIPT-BASED SOLUTIONS!
+%
+%Function Name: mg_equalsIgnoreOrder
+%
+%Description:
+%     This function compares multiple variables to the refernce values.
+%     varargin is a pool of possible solutions. As long as all given variables fit
+%     into this pool, pass returns 1 (success)
+%
+%     You can also have one variable and check for multiple values.
+%
+%Inputs:
+%     varNames (string array)
+%         Names of variables that shall be checked
+%     varargin
+%         values that the variables should contain
+%Outputs:
+%   pass (int)
+%       0
+%           wrong values or dupes
+%       1
+%           all variables fit to the given references
+%       2
+%         not all variables were declared
+%   wrong (string array)
+%       names of variables that do not match the reference.
+%   dupes (string array)
+%       names of variables that are duplicates.
+
+
 % varNames (String array): String array of variable names in the student's solution. ["varA","varB"]
 % varargin (reference values/variables): Cell array containg the reference variables.
 

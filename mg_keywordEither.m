@@ -1,10 +1,42 @@
-% keywords (string array): keywords to check for using ML-Grader functions
-% varargin (strings): ignore matlab files used by grader containing any of the given
-% strings. Use this, if you upload own scripts/functions
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_keywordEither
+%
+%Description:
+%   This function uses the given keyword check in ML Grader and extends it 
+%   to multiple keywords. If one or more are present the result is true.
+%
+%Inputs:
+%     keywords (string array)
+%         Collection of strings that shall be in the the solution. At least one
+%         String must be used
+%     varargin (strings / char arrays)
+%         Function and script names (excluding .m) that shall be ignored. Use this
+%         to prevent your uploaded files from beeing scanned.
+% 
+% Outputs:
+%     pass (int)
+%         0
+%             No keywords ere used
+%         1
+%             At least one keyword was used
+%         2
+%             All keywords were used
+%     used (string array)
+%         Returns all used keywords
+%     unused (string array)
+%         Returns all unused keywords. Empty, if all were used.
 
-% pass  (int)-> 0: fail, 1: at least one used, 2:all used
-% missing (string array): missing keywords
-% used (string arrray): used keywords
 
 
 function [pass, used, unused] = mg_keywordEither(keywords, varargin)
@@ -13,8 +45,10 @@ function [pass, used, unused] = mg_keywordEither(keywords, varargin)
     used = [];
     unused = [];
     
+    %Get generated solution file
     filename = getMGFileName(varargin);
     
+    %Cycle using ML Grader function
     for keyword = keywords
         
         isKWused = 0;

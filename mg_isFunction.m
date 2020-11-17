@@ -1,16 +1,37 @@
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_plotExists
+%
+%Description:
+%   This is just a wrapper that checks if a graph was created by the solution
+%
+%Outputs:
+%   result (bool)
+%       true: graph was created
+%       false: graph was not created
 
 
 function result = mg_isFunction(varargin)
 
+    %Get generated solution file
     filename = getMGFileName(varargin);
-    if size(filename) == size('solution.m')
-        if all(filename == 'solution.m')
-            result = false();
-            return
-        end
     
+    %Check if solution file is named solution.m
+    if strcmp(filename, 'solution.m')
+        result = false();
+    else
+        result = true();
     end
-    result = true();
 end
 
 

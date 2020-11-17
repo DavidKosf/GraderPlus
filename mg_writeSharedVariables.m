@@ -1,6 +1,29 @@
-% varargin (strings): Variable names || empty -> all vars
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_writeSharedVariables
+%
+%Description:
+%   This function allows storing variables created in a test for later use 
+%   in following tests.
+%
+%Inputs:
+%     varargin (strings / char arrays)
+%         Names of variables that shall be stored
+% 
+% Outputs:
+%     success (bool)
+%         Indicates if the storing operation was successful
 
-% success (logical): 1/0 if storing/ writing was possible
 
 function [success] = mg_writeSharedVariables(varargin)
 
@@ -12,7 +35,7 @@ function [success] = mg_writeSharedVariables(varargin)
            vars = vars + ",'" + varName{:} + "'";
        end
        
-       %add append when file exists -> dont delete other vars on overwrite
+       %add append when file exists to prevent override
        append = "";
        if isfile('mg_sharedvarstorage.mat')
            append = ",'-append'";
@@ -22,7 +45,8 @@ function [success] = mg_writeSharedVariables(varargin)
        fncCall = "save('mg_sharedvarstorage.mat' " + vars + append +");";
        evalin('caller', fncCall);
     catch ME
-       disp(ME);
+        %error handling
+        disp(ME);
         success = false();
     end
 end

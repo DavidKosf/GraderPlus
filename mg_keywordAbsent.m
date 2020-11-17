@@ -4,11 +4,43 @@
 
 % all absent (logical): logical 1/0 if no given keyword is used
 % used (string array): forbidden but still used keywords
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_keywordAbsent
+%
+%Description:
+%   This function uses the given keyword check in ML Grader and extends it 
+%   to multiple keywords. If one or more are present the result is false.
+%
+%Inputs:
+%     keywords (string array)
+%         Collection of strings that shall not be in the the solution.
+%     varargin (strings / char arrays)
+%         Function and script names (excluding .m) that shall be ignored. Use this
+%         to prevent your uploaded files from beeing scanned.
+% 
+% Outputs:
+%     allAbsent (bool)
+%         True if all keywords are absent
+%     used (string array)
+%         Returns all used keywords that are forbidden
+
 
 function [allAbsent, used] = mg_keywordAbsent(keywords, varargin)
     allAbsent = true();
     used = [];
     
+    %Get generated solution file
     filename = getMGFileName(varargin);
 
     for keyword = keywords

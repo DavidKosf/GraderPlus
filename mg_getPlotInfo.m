@@ -1,4 +1,24 @@
-% Returns struct with information about the current plot
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_getPlotInfo
+%
+%Description:
+%   This functions summarizes information about the current plot.
+%
+%Outputs:
+%   data (struct)
+%         Struct with informations about the current plot.
+%         To see all available fields browse the file.
 
 function data = mg_getPlotInfo()
 

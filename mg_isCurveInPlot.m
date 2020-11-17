@@ -1,19 +1,49 @@
-%varargin (Char array1, value1, char array2, value2, ... , char arrrayN, valueN)
-% possible requirements can be: 'Color','LineStyle','LineWidth','Marker','MarkerSize','MarkerFaceColor','XData','YData','ZData','DisplayName'
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_isCurveInPlot
+%
+%Description:
+%     This function alloes you to search the current graphic for lines (graphs)
+%     that fit certain requirements. Every line property can be checked.
+%
+%Inputs:
+%     varargin (char array - value pairs)
+%         Property and values pairs.
+%         There must be an even number of inputs. At least 2 must be given (one roperty and one value).
+%         Properties are:
+%         'AlignVertexCenters','Annotation','BeingDeleted','BusyAction','ButtonDownFcn','Children','Clipping','Color','CreateFcn','DataTipTemplate','DeleteFcn','DisplayName','HandleVisibility','HitTest','Interruptible','LineJoin','LineStyle','LineWidth','Marker','MarkerEdgeColor','MarkerFaceColor','Parent','PickableParts','Selected','SelectionHighlight','Tag','Type','UIContextMenu','UserData','Visible','XData','XDataMode','XDataSource','YData','YDataMode','YDataSource','ZData','ZDataMode','ZDataSource'
+%Outputs:
+%     result (bool)
+%         True if specified line is in the current plot (drawn by student solution)
+%
+%Usage:
+%     mg_isCurveInPlot(Prop1, Value1, Prop2, value2, ... , PropN, ValueN);
+%Example:
+%     mg_isCurveInPlot('XData', [1,2,3,4,5], 'YData', [1,4,9,16,25], 'Color', [0, 0.5, 0.5]);
 
-%result (logical): 1 if line is in plot, 0 if not
+
 
 function result = mg_isCurveInPlot(varargin)
     result = false();
-    possibleProperties = ["Color","LineStyle","LineWidth","Marker","MarkerSize","MarkerFaceColor","MarkerEdgeColor","XData","YData","ZData","DisplayName"];
+    possibleProperties = ["AlignVertexCenters","Annotation","BeingDeleted","BusyAction","ButtonDownFcn","Children","Clipping","Color","CreateFcn","DataTipTemplate","DeleteFcn","DisplayName","HandleVisibility","HitTest","Interruptible","LineJoin","LineStyle","LineWidth","Marker","MarkerEdgeColor","MarkerFaceColor","Parent","PickableParts","Selected","SelectionHighlight","Tag","Type","UIContextMenu","UserData","Visible","XData","XDataMode","XDataSource","YData","YDataMode","YDataSource","ZData","ZDataMode","ZDataSource"];
     %% Check for empty input argumetns
     if (isempty(varargin))
-        error("No arguments given.\nUsage: isCurveInCurrentPlot('Property1', 'Wanted1', 'Property2', 'Wanted2', ...\nProperties can be:\n'Color'\n'LineStyle'\n'LineWidth'\n'Marker'\n'MarkerSize'\n'MarkerFaceColor'\n'XData'\n'YData'\n'ZData'", "");
+        error("No arguments given.\nUsage: isCurveInCurrentPlot('Property1', 'Wanted1', 'Property2', 'Wanted2', ...\nProperties can be:\n'AlignVertexCenters'\n'Annotation'\n'BeingDeleted'\n'BusyAction'\n'ButtonDownFcn'\n'Children'\n'Clipping'\n'Color'\n'CreateFcn'\n'DataTipTemplate'\n'DeleteFcn'\n'DisplayName'\n'HandleVisibility'\n'HitTest'\n'Interruptible'\n'LineJoin'\n'LineStyle'\n'LineWidth'\n'Marker'\n'MarkerEdgeColor'\n'MarkerFaceColor'\n'Parent'\n'PickableParts'\n'Selected'\n'SelectionHighlight'\n'Tag'\n'Type'\n'UIContextMenu'\n'UserData'\n'Visible'\n'XData'\n'XDataMode'\n'XDataSource'\n'YData'\n'YDataMode'\n'YDataSource'\n'ZData'\n'ZDataMode'\n'ZDataSource'\n", "");
     end
     
     %% Check if amount of inputs is a multiple of 2
     if mod(length(varargin),2) ~= 0
-        error("Amount of input Arguments must be a multiple of 2!\nUsage: isCurveInCurrentPlot('Property1', 'Wanted1', 'Property2', 'Wanted2', ...\nProperties can be:\n'Color'\n'LineStyle'\n'LineWidth'\n'Marker'\n'MarkerSize'\n'MarkerFaceColor'\n'XData'\n'YData'\n'ZData'","");
+        error("Amount of input Arguments must be a multiple of 2!\n\nUsage: isCurveInCurrentPlot('Property1', 'Wanted1', 'Property2', 'Wanted2', ...\nProperties can be:\n'AlignVertexCenters'\n'Annotation'\n'BeingDeleted'\n'BusyAction'\n'ButtonDownFcn'\n'Children'\n'Clipping'\n'Color'\n'CreateFcn'\n'DataTipTemplate'\n'DeleteFcn'\n'DisplayName'\n'HandleVisibility'\n'HitTest'\n'Interruptible'\n'LineJoin'\n'LineStyle'\n'LineWidth'\n'Marker'\n'MarkerEdgeColor'\n'MarkerFaceColor'\n'Parent'\n'PickableParts'\n'Selected'\n'SelectionHighlight'\n'Tag'\n'Type'\n'UIContextMenu'\n'UserData'\n'Visible'\n'XData'\n'XDataMode'\n'XDataSource'\n'YData'\n'YDataMode'\n'YDataSource'\n'ZData'\n'ZDataMode'\n'ZDataSource'\n", "");
     end
     
     %% Generate cell of searched for properties from varargin
@@ -30,7 +60,7 @@ function result = mg_isCurveInPlot(varargin)
     end
     
     if ~all(contains(stringProperties, possibleProperties))
-        error("Invalid Property. Properties can be:\n'Color'\n'LineStyle'\n'LineWidth'\n'Marker'\n'MarkerSize'\n'MarkerFaceColor'\n'XData'\n'YData'\n'ZData'","");
+        error("Invalid Property. \nProperties can be:\n'AlignVertexCenters'\n'Annotation'\n'BeingDeleted'\n'BusyAction'\n'ButtonDownFcn'\n'Children'\n'Clipping'\n'Color'\n'CreateFcn'\n'DataTipTemplate'\n'DeleteFcn'\n'DisplayName'\n'HandleVisibility'\n'HitTest'\n'Interruptible'\n'LineJoin'\n'LineStyle'\n'LineWidth'\n'Marker'\n'MarkerEdgeColor'\n'MarkerFaceColor'\n'Parent'\n'PickableParts'\n'Selected'\n'SelectionHighlight'\n'Tag'\n'Type'\n'UIContextMenu'\n'UserData'\n'Visible'\n'XData'\n'XDataMode'\n'XDataSource'\n'YData'\n'YDataMode'\n'YDataSource'\n'ZData'\n'ZDataMode'\n'ZDataSource'\n", "");
     end
     %% Get line Array of current plot
     handle = findobj(gca, 'Type', 'line');

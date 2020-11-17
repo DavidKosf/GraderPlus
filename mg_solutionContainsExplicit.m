@@ -1,11 +1,41 @@
-% statements (String-Array): Explicit statement and 'look-a-likes' that shoud be in the solution
-% varargin (strings): ignore matlab files used by grader containing any of the given
-% strings. Use this, if you upload own scripts/functions
-
-% Present (logical): If an statement is in the solution -> true
+%=== Matlab Grader Framework ===
+%
+%Library for advanced testing in MATLAB® Grader 
+%Created by David Kosfelder 
+%for the Process Dynamics and Operations Group at TU Dortmund
+% 
+%Contact: david.kosfelder@tu-dortmund.de
+%
+%
+%
+%=== Function Summary ===
+%
+%Function Name: mg_solutionContainsExplicit
+%
+%Description:
+%   This function searches for keywords used in the solution. It is an
+%   extension to the existing keyword search and allows for checking regular expressions.
+%   Comments in the solution are filtered and ignored.
+%
+%Inputs:
+%   statements (Sting array)
+%       keywords (normal strings and regular expressions) that the function
+%       shall look for. You can check for multiple keywords in order to catch
+%       "look-a-likes"
+%
+%   varargin (strings)
+%       Filenames or parts of filenames that shall be ignored while determing
+%       the name of the solution file. Use this to preent your own uploaded
+%       files from beeing scanned.
+% 
+%Outputs:
+%   present (bool)
+%       true: at least one statement was used in the solution
+%       false: no statement was used in the solution
 
 function present = mg_solutionContainsExplicit(statements, varargin)
     
+    % Finding the solution file and reading its content.
     filename = getMGFileName(varargin);
     content = fileread(filename);
     
@@ -22,6 +52,7 @@ function present = mg_solutionContainsExplicit(statements, varargin)
         expressionsCFound = regexp(as_lines, "%.*"+statement);
 
         if length([expressionsFound{:}]) > length([expressionsCFound{:}])
+            %at least one expression was found
             present = true();
             return
         end
@@ -30,7 +61,8 @@ end
 
 % Code to get the MATLAB-Grader generated solution file
 function filename = getMGFileName(varargin)
-
+    
+    % Ignoring specified file names
     if isempty(varargin)
         ignoreFiles = [];
     else
