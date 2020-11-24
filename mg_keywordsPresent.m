@@ -10,69 +10,49 @@
 %
 %=== Function Summary ===
 %
-%Function Name: mg_keywordEither
+%Function Name: mg_keywordsPresent
 %
 %Description:
 %   This function uses the given keyword check in ML Grader and extends it 
-%   to multiple keywords. If one or more are present the result is true.
+%   to multiple keywords. If all are present the result is true.
 %
 %Inputs:
 %     keywords (string array)
-%         Collection of strings that shall be in the the solution. At least one
-%         String must be used
+%         Collection of strings that shall be in the the solution. Every string
+%         has to be used at least once.
 %     varargin (strings / char arrays)
 %         Function and script names (excluding .m) that shall be ignored. Use this
 %         to prevent your uploaded files from beeing scanned.
 % 
 % Outputs:
-%     pass (int)
-%         0
-%             No keywords ere used
-%         1
-%             At least one keyword was used
-%         2
-%             All keywords were used
-%     used (string array)
-%         Returns all used keywords
-%     unused (string array)
-%         Returns all unused keywords. Empty, if all were used.
+%     allPresent (bool)
+%         Indicates if all keywords were present.
+%     missing (string array)
+%         Returns missing keywords. Empty if all were used.
 
 
 
-function [pass, used, unused] = mg_keywordEither(keywords, varargin)
-
-    pass = 0;
-    used = [];
-    unused = [];
+function [allPresent, missing] = mg_keywordsPresent(keywords, varargin)
     
-    %Get generated solution file
+    allPresent = 1;
+    missing = [];
+    
+    % Get the generated solution file
     filename = getMGFileName(varargin);
-    
-    %Cycle using ML Grader function
+
+    %Loop using the ML Grader given function
     for keyword = keywords
         
-        isKWused = 0;
-        
         try
-            assessFunctionAbsence(keyword, 'FileName', filename);
+            assessFunctionPresence(keyword, 'FileName', filename);
         catch
-            pass = 1;
-            isKWused = 1;
-        end
-        
-        if isKWused
-            used = [used, keyword];
-        else
-            unused = [unused, keyword];
+            allPresent = 0;
+            missing = [missing, keyword];
         end
         
     end
-    
-    if isempty(unused)
-        pass = 2;
-    end
-
 end
+
 
 % Code to get the MATLAB-Grader generated solution file
 function filename = getMGFileName(varargin)
@@ -104,3 +84,4 @@ function filename = getMGFileName(varargin)
     
     filename = convertStringsToChars(fileList(location));
 end
+

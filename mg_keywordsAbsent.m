@@ -16,7 +16,7 @@
 %
 %=== Function Summary ===
 %
-%Function Name: mg_keywordAbsent
+%Function Name: mg_keywordsAbsent
 %
 %Description:
 %   This function uses the given keyword check in ML Grader and extends it 
@@ -36,7 +36,7 @@
 %         Returns all used keywords that are forbidden
 
 
-function [allAbsent, used] = mg_keywordAbsent(keywords, varargin)
+function [allAbsent, used] = mg_keywordsAbsent(keywords, varargin)
     allAbsent = true();
     used = [];
     

@@ -10,12 +10,11 @@
 %
 %=== Function Summary ===
 %
-%Function Name: mg_checkStudentFunction
+%Function Name: mg_getStudentFunction
 %
 %Description:
 %     This function checks if a solution is a function and has a desired number of in- and outputs
-%     Returns the function name
-%     Similar to mg_getStudentFunction
+%     Similar to mg_checkSolutionFunction
 %
 % Inputs:
 %     inputs (int)
@@ -25,25 +24,33 @@
 %         
 %Outputs:
 %   result (bool)
-%       0
-%             No solution function fitting the number of in- and outputs was found.
-%       1
-%             Fitting solution was found.
+%       pass
+%             true, if fitting solution is found
+%       status (string)
+%           "in"
+%               If input amount isnt right
+%           "out"
+%               If output amount isnt right
+%           "<function name>"
+%               If in- and output amounts are right.
 
-function pass = mg_checkStudentFunction(inputs, outputs)
+function [pass, status] = mg_getSolutionFunction(inputs, outputs, varargin)
     
-    filename = getMGFileName();
+    filename = getMGFileName(varargin);
     fncname = filename(1:end-2);
     
     try
         %compare inputs
         if evalin('caller', ['nargin("', fncname ,'")']) ~= inputs
-            pass = 0;
+            pass = false();
+            status = "in";
         %compare outputs
         elseif evalin('caller', ['nargout("', fncname ,'")']) ~= outputs
-            pass = 2;
+            pass = false();
+            status = "out";
         else
-            pass = 1;
+            pass = true();
+            status = fncname;
         end
     catch
         pass = 0;

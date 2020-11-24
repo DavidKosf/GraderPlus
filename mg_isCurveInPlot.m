@@ -21,7 +21,12 @@
 %         Property and values pairs.
 %         There must be an even number of inputs. At least 2 must be given (one roperty and one value).
 %         Properties are:
-%         'AlignVertexCenters','Annotation','BeingDeleted','BusyAction','ButtonDownFcn','Children','Clipping','Color','CreateFcn','DataTipTemplate','DeleteFcn','DisplayName','HandleVisibility','HitTest','Interruptible','LineJoin','LineStyle','LineWidth','Marker','MarkerEdgeColor','MarkerFaceColor','Parent','PickableParts','Selected','SelectionHighlight','Tag','Type','UIContextMenu','UserData','Visible','XData','XDataMode','XDataSource','YData','YDataMode','YDataSource','ZData','ZDataMode','ZDataSource'
+%         'AlignVertexCenters','Annotation','BeingDeleted','BusyAction',
+%         'ButtonDownFcn','Children','Clipping','Color','CreateFcn','DataTipTemplate',
+%         'DeleteFcn','DisplayName','HandleVisibility','HitTest','Interruptible','LineJoin',
+%         'LineStyle','LineWidth','Marker','MarkerEdgeColor','MarkerFaceColor','Parent','PickableParts',
+%         'Selected','SelectionHighlight','Tag','Type','UIContextMenu','UserData','Visible','XData','XDataMode',
+%         'XDataSource','YData','YDataMode','YDataSource','ZData','ZDataMode','ZDataSource'
 %Outputs:
 %     result (bool)
 %         True if specified line is in the current plot (drawn by student solution)

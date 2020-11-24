@@ -26,12 +26,12 @@ function data = mg_getPlotInfo()
     data = struct;
     %%Title
     data.title = handle.Title;
-    data.titleString = handle.Title.String;
+    data.titleString = string(handle.Title.String);
     
     %%Labels
-    data.xLabel = handle.XLabel.String;
-    data.yLabel = handle.YLabel.String;
-    data.zLabel = handle.ZLabel.String;
+    data.xLabel = string(handle.XLabel.String);
+    data.yLabel = string(handle.YLabel.String);
+    data.zLabel = string(handle.ZLabel.String);
     
     %%Limits
     data.xLimits = handle.XLim;
@@ -39,9 +39,9 @@ function data = mg_getPlotInfo()
     data.zLimits = handle.ZLim;
     
     %%Scales
-    data.xScale = handle.XScale;
-    data.yScale = handle.YScale;
-    data.zScale = handle.ZScale;
+    data.xScale = string(handle.XScale);
+    data.yScale = string(handle.YScale);
+    data.zScale = string(handle.ZScale);
     
     %%Grids
     data.xGrid = isequal(handle.XGrid, 'on');
@@ -62,7 +62,7 @@ function data = mg_getPlotInfo()
     
     %%Legend Title
     try
-        data.legendTitle = data.legend.Title.String;
+        data.legendTitle = string(data.legend.Title.String);
     catch
         data.legendTitle = "";
     end
@@ -70,7 +70,7 @@ function data = mg_getPlotInfo()
     
     %%Legend Text // Order is order of adding graphs
     try
-        data.legendText = data.legend.String;
+        data.legendText = string(data.legend.String);
     catch
         data.legendText = "";
     end

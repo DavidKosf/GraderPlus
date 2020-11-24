@@ -10,7 +10,7 @@
 %
 %=== Function Summary ===
 %
-%Function Name: mg_compArrIgnDim
+%Function Name: mg_compArrIgnTrans
 %
 %Description:
 %     Comparing arrays/matrices regardless of orientation (transposition).
@@ -29,11 +29,11 @@
 
 
 
-function equals = mg_compArrIgnDim(solution, reference)
+function equals = mg_compArrIgnTrans(solution, reference)
 
-    % Var name given.
+    % Var name not given.
     if all(size(solution) == [1,1])
-        % Try to fetch variable. equals = false if it oes not exist.
+        % Try to fetch variable. equals = false if it does not exist.
         try
             solution = evalin('caller', solution)
         catch

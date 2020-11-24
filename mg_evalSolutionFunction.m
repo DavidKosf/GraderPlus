@@ -10,13 +10,15 @@
 %
 %=== Function Summary ===
 %
-%Function Name: mg_evalStudentFunction
+%Function Name: mg_evalSolutionFunction
 %
 %Description:
 %     Finds and evaluates the solution function for given inputs.
 %     If input and output amounts (except the pass output) are not equal, pass wil be false
 % 
 % Inputs:
+%     toIgnore (String array)
+%         String patterns to ignore when finding the solution function
 %     varargin
 %         Inputs to the solution function.
 %         
@@ -27,9 +29,9 @@
 %         return values of the function
 
 
-function [pass, varargout] = mg_evalStudentFunction(varargin)
+function [pass, varargout] = mg_evalSolutionFunction(toIgnore, varargin)
     
-    filename = getMGFileName();
+    filename = getMGFileName(toIgnore);
     fncname = filename(1:end-2);
     
     fncin = nargin(fncname);

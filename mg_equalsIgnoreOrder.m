@@ -40,13 +40,6 @@
 %       names of variables that are duplicates.
 
 
-% varNames (String array): String array of variable names in the student's solution. ["varA","varB"]
-% varargin (reference values/variables): Cell array containg the reference variables.
-
-% pass (int) -> 0:fail (wrong values or dupes), 1:success, 2:not all vars used (any variable named in varNames is not used by student)
-% wrong (String array): String array containin variable names with wrong values
-% dupes (String array): String array containin variable names with duplicate values (only correct values that already have been recognized)
-
 function [pass, wrong, dupes] = mg_equalsIgnoreOrder(varNames, varargin)
 
     checked = {};
