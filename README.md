@@ -245,7 +245,7 @@ The outputs contain a pass bool, a string array of wrong and one of duped variab
 ```
 
 ```matlab
-% Scenario 1:
+% Scenario 2:
 % Task is to save one zero of the function x^2-9 to the variable n
 [pass, wrong, dupes] = mg_equalsIgnoreOrder(["n"], -3, 3)
 %
