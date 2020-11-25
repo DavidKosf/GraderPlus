@@ -41,8 +41,11 @@ function [success] = mg_writeSharedVariables(varargin)
            append = ",'-append'";
        end
        
+       % Exclude grader vars
+       exclude = ",'-regexp','^(?!(currentFigureHandles|previousFigureHandles|referenceVariables|seed|show)$).'";
+       
        %evaluate function in caller
-       fncCall = "save('mg_sharedvarstorage.mat' " + vars + append +");";
+       fncCall = "save('mg_sharedvarstorage.mat' " + vars + append + exclude + ");";
        evalin('caller', fncCall);
     catch ME
         %error handling
