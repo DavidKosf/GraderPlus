@@ -52,7 +52,7 @@ function data = mg_getPlotInfo()
     data.lines = findobj(gca, 'Type', 'line');
     
     %%Linecount
-    data.linecount = size(data.lines, 1);
+    data.lineCount = size(data.lines, 1);
     
     %%Legend
     data.legend = handle.Legend;
