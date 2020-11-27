@@ -1,6 +1,6 @@
 # Matlab-Grader-Framework
-This is a collection of standalone functions that can be integrated into MATLAB®-Grader tasks to improve testing. It allows for more diverse tests, easier test creation and more freedom while solving.  
-Please keep in mind that this library was created "as needed". It is not guranteed to be bug free and may seem inconsequential.  
+This is a collection of standalone functions that can be integrated into MATLAB®-Grader tasks to improve the writing of test code. It allows for more diverse tests, easier test creation and more freedom while solving. 
+Please keep in mind that this library was created "as needed". It is not guranteed to be bug free.  
    
 If you are missing something or have ideas for stuff to improve, get in touch, write an [eMail](mailto:david.kosfelder@tu-dortmund.de).
 
@@ -34,14 +34,17 @@ If you are missing something or have ideas for stuff to improve, get in touch, w
     * [mg_evalSolutionFunction](#mg_evalSolutionFunction)
   
 ## General information
-Even though the functions worked fine in our tasks, it is not recommended to use them for real grading. 
+The provided test function library was developed during the funded project "Feedback!" of the faculty BCI at TU Dortmund University in Germany. 
 
 ### Integration
-The desired function can simply be uploaded to the desired MATLAB®-Grader Task. Every file is a standalone. You can call these functions in code based tests.
+Every file is a standalone and provides a specific functionality to test MATLAB Grader tasks. Therefore the files that shall be used in the test code must be uploaded as an additional file to the MATLAB®-Grader task. Afterwards, you can call these functions in code based tests of the task.
 ### Function and script based solutions
-MATLAB®-Grader differentiates between functions and scripts as solutions. Therefore, some of the functions only work in specific cases.
+MATLAB®-Grader differentiates between functions and scripts as solutions. Therefore, some of the functions only work in script other in function environments.
 ### Function Naming
-You will notice that all function names start with "mg_". Some functions are able to find the solution function, thus giving the person solving the freedom of naming it on their own. "mg_" excludes these files from the filter. You can add "mg_" to your personal files to avoid trouble. If you do not want to do that, you can also tell the filter not to look for functions containing certain keywords.
+All names of the provided functions are prefixed with "mg_". This is important as we internally use reflection to search for functions that were provided in the solution code by the student (see mg_isFunction.m). The functions prefixed with "mg_" are exclude in the default case. If you use helper functions that shall not interfere with the reflection of the solution code you can either prefix your functions with "mg_" or you can use an overload of the XXX function that also filters out your internal functions.
+
+## Use cases
+TODO: Link examples of Demo Course and shortly describe the problem and how to solve it with this library.
 
 ## Functions
 
@@ -50,12 +53,12 @@ You will notice that all function names start with "mg_". Some functions are abl
 You can fail a test by generating an error. Furthermore this collection contains a wrapper.
 
 #### mg_setTestStatus
-Wrapper to either fail a test or do nothing.
-Following usage literally does nothing.
+Wrapper that changes a test status to fail if the condition is false and outputs the given error text.
+In the following case it does nothing:
 ```matlab
 mg_setTestSatus(true(), "some text");
 ```
-Following usage fails a test with the message "some text".
+In this case it fails with a test containing the message "some text".
 ```matlab
 mg_setTestSatus(false(), "some text");
 ```
@@ -76,17 +79,17 @@ msg = mg_multiText("Variable %s is wrong.", "a", "b", "f");
 mg_setTestSatus(false(), msg);
 ```
 ### Sharing information between tests
-These functions allow you to store variables in a test and recall them in a later one. Keep in mind that the tests are executed in order. It is only possible to save something in one test and then load it in a following one. 
+The following functions allow you to share variables between tests. So they can be generated in a test one and be recalled in a later test, e.g. test 2. The tests are executed in the order of their definition. 
 
 #### mg_writeSharedVariables
-This functions allows you to store Variables in a test and make them able to be recalled later. It has to be executed in a test before the values can be loaded in another one. It works simmilar to the save() function. The output returns true(), if the saving operation was successful. 
+This functions allows you to store Variables of a test and make them able to be recalled later. It has to be executed in a test before the values can be loaded in another one. It works simmilar to the save() function. The output returns true(), if the saving operation was successful.
 ```matlab
 mg_writeSharedVariables(); % Saves all variables declared in the current test
 mg_writeSharedVariables("a", "b"); % Only saves variables a and b
 ```
 
 #### mg_loadSharedVariables
-This functions allows you to load stored Variables. It can only be used after you saved something. Otherwise it will return a false() output.
+This functions allows you to load stored Variables. If used without calling mg_writeSharedVariables first it will return false.
 ```matlab
 mg_loadSharedVariables(); % Loads all previously stored variables
 mg_loadSharedVariables("a", "b"); % Only loads variables a and b
@@ -96,7 +99,7 @@ mg_loadSharedVariables("a", "b"); % Only loads variables a and b
 These functions grab information from the graph that is drawn by a student solution.
 
 #### mg_plotExists
-Returns a bool that indicates if a plot was created by the solution.
+Returns a bool that indicates if a plot was created by the solution code.
 ```matlab
 if mg_plotExists()
   % do stuff
@@ -121,7 +124,7 @@ Returns a struct with the following fields. If no plot exists, fields will be em
 
 #### mg_isCurveInPlot
 
-This function allows you to search for a specified line in the plot drawn by the solution. Multiple lines are supported, but you can only search for one line at a time per function call. The returned value is a bool that is true, if all required properties fit to at least one line in the graph. Only the properties that shall be checked need to be specified. Specification works via key-value ash shown in the following example. An even number of inputs and at least two arguments must be given. For more information check out the [line](https://www.mathworks.com/help/matlab/ref/matlab.graphics.primitive.line-properties.html) object.
+This function allows you to search for a specified line in a plot that has been drawn by the solution code. Multiple lines are supported, but you can only search for one line at a time. The returned value is a bool that is true, if all required properties fit to at least one line in the graph. Only the properties that shall be checked need to be specified. Specification works via key-value as shown in the following example. An even number of inputs and at least two arguments must be given. For more information check out the [line](https://www.mathworks.com/help/matlab/ref/matlab.graphics.primitive.line-properties.html) object.
 ```matlab
 % Checking for two lines in one graph
 A = mg_isCurveInPlot('XData', [0, 1, 2, 3], 'YData', [0, 1, 2, 9], 'Color', [0 0 1], 'LineStyle', '--'); % Example for a blue dashed parabola
@@ -158,31 +161,31 @@ end
 Most of the following functions support **A**uto-**S**olution-**T**racking, a feature that finds the solution whether it is a script or a function. You dont need to give a name so people solving your tasks have a greater freedom. To avoid your own uploaded files from being targeted as the solution, you can give string patterns that will be ignored. Only *.m are considered.
 
 #### mg_keywordsPresent
-This function checks for the presence of multiple strings in the solution at once. The first output argument will be false(), if at least one keyword is missing. The second argument will return a string array contatining the missing keywords. Keywords to search for can be defined in a string array. It is based on ML-Grader functions.  
-This function supports AST. String patterns that should be avoided in file names can be given as varargin inputs.
+This function checks for the presence of multiple strings in the solution code. The input argument is a string array that contains the keywords that shall be used. The first output argument is false, if at least one keyword is missing. The second output argument is a string array contatining the missing keywords.
+This function supports AST. Filename patterns that should be avoided during reflection can be given as varargin inputs.
 ```matlab
 % Checking for sin, cos and tan
 [pass, missing] = mg_keywordsPresent(["sin", "cos", "tan"], "myFile", "anotherFile"); % myFile.m, anotherFile.m and files like myFileIsAwesme.m will be ignored.
-msg = mg_multiText("The keyword %s is missing.");
+msg = mg_multiText("The keyword %s is missing.", used);
 mg_setTestStatus(pass, msg);
 % If all keywords were used the test is passed.
 % If not all keywords were used the test fails and gives a multiline error.
 ```
 #### mg_keywordsAbsent
-This function checks for the absence of multiple strings in the solution at once. The first output argument will be false(), if at least one keyword was used. The second argument will return a string array contatining the used forbidden keywords. Keywords to search for can be defined in a string array. It is based on ML-Grader functions.  
-This function supports AST. String patterns that should be avoided in file names can be given as varargin inputs.
+This function checks for the absence of multiple strings in the solution code. The input argument is a string array that contains the keywords that shall not be used. The first output argument is false, if at least one keyword has been used and true otherwise. The second argument returns a string array contatining the used forbidden keywords.  
+This function supports AST. Filename patterns that should be avoided during reflection can be given as varargin inputs.
 ```matlab
 % Checking for sin, cos and tan
 [pass, used] = mg_keywordsAbsent(["sin", "cos", "tan"], "myFile", "anotherFile"); % myFile.m, anotherFile.m and files like myFileIsAwesme.m will be ignored.
-msg = mg_multiText("The keyword %s was used.");
+msg = mg_multiText("The keyword %s was used.", used);
 mg_setTestStatus(pass, msg);
 % If none of the specified keywords were used the test is passed.
 % If any of the keywords was used the test fails and gives a multiline error.
 ```
 
 #### mg_keywordsEither
-This function checks for the presence of at least one string of a set in the solution. The first output argument will be false(), if no keyword was used. The second argument will return a string array contatining the used keywords. The third argument will return a string array contatining the unused keywords.  Keywords to search for can be defined in a string array. It is based on ML-Grader functions.  
-This function supports AST. String patterns that should be avoided in file names can be given as varargin inputs.
+This function checks for the presence of at least one string of a set in the solution code. The input argument is a string array that contains the keywords that contains at least one keyword that is also part of the solution code. The first output argument is false, if no keyword was used. The second output argument is a string array contatining the keywords used in the solution code. The third argument is a string array contatining the keywords unused in the solution code. 
+This function supports AST. Filename patterns that should be avoided during reflection can be given as varargin inputs.
 ```matlab
 % Checking for sin, cos and tan
 [pass, used, unused] = mg_keywordsAbsent(["sin", "cos", "tan"], "myFile", "anotherFile"); % myFile.m, anotherFile.m and files like myFileIsAwesme.m will be ignored.
@@ -198,8 +201,8 @@ end
 ```
 
 #### mg_solutionContainsExplicit
-This function works like [mg_keywordsEither](#mg_keywordsEither). However, it supports regular expressions and ignores comments. The return value is a bool that is true, if at least one regexp was found. Regexp can be given as a string array.  
-This function supports AST. String patterns that should be avoided in file names can be given as varargin inputs.
+This function works like [mg_keywordsEither](#mg_keywordsEither). However, it supports regular expressions and ignores comments in the solution code. The return value is a bool that is true, if at least one regexp was found. Regexp can be given as a string array.  
+This function supports AST. Filename patterns that should be avoided during reflection can be given as varargin inputs.
 
 ```matlab
 % Checking if ode45 was executed with a specified function and any starting values, etc
@@ -219,8 +222,8 @@ mg_setTestStatus(pass, )
 
 #### mg_equalsIgnoreOrder
 *Only for script based solutions*  
-This functions compares a set of solution declared variables against a pool of possible answers. This also allows for checking one variable against different possibilities.  
-The outputs contain a pass bool, a string array of wrong and one of duped variables.
+This functions compares a set of solution declared variables against a pool of possible answers. In one use-case this also allows to check one variable against a set of correct values.  
+The outputs contains boolean flag, a string array of wrong and one of duped variables.
 
 ```matlab
 % Scenario 1:
@@ -265,7 +268,7 @@ The outputs contain a pass bool, a string array of wrong and one of duped variab
   
 
 #### mg_compArrIgnDim
-This function compares arrays regardless of their transposition (it occured multiple times, that solutions would not be recognised, because the transposition was wrong). It also accepts a variable name as input (script based only).
+In our course, it occured multiple times, that a solution was wrong, because the transposition was mismatched. Therefore, this function compares arrays regardless of their transposition. It also accepts a variable name as input (script based only).
 
 ```matlab
 mg_setTestStatus( mg_compArrIgnTrans(a, [1,2,3,4]), "The Vector is wrong" );   % Only fails the test on false() inout
@@ -274,7 +277,7 @@ mg_setTestStatus( mg_compArrIgnTrans("a", referenceVariables.a), "The Vector is 
 
 #### mg_varExists
 *Only for script based solutions*  
-This function checks if variables have been declared by the solution, thus preventing errors in testing. A string array of missing ones is given.
+This function checks if variables have been declared in the solution code. As a first step, this prevents errors in testing code due to not declared variables. It returns a boolean flag if the check has pass and in case of pass=false it missing contains a list of the variable names that are not declared.
 
 ```matlab
 [pass, missing] = mg_varExists("alpha", "bravo", "charlie");
@@ -288,7 +291,7 @@ end
 
 #### mg_isFunction
 This function checks if the solution is a function (defined header, etc.). Result will be true, if the solution is indeed a function.  
-This function supports AST. String patterns that should be avoided in file names can be given as varargin inputs.
+This function supports AST. Filename patterns that should be avoided during reflection can be given as varargin inputs.
 
 ```matlab
 % Checking if solution is a function
@@ -298,7 +301,7 @@ pass = mg_isFunction("myFile", "anotherFile"); % myFile.m, anotherFile.m and fil
 #### mg_getSolutionFunction
 This function will return the name of a solution function (if there ist any) with fitting in- and output amounts. The second output will tell you the function name, or if there is not the right amount of in- or outputs.  
 *The amount for varargin and varargout is -1*  
-This function supports AST. String patterns that should be avoided in file names can be given as varargin inputs.
+This function supports AST. Filename patterns that should be avoided during reflection can be given as varargin inputs.
 
 ```matlab
 % Getting solution function for 3 inputs and varargout
@@ -315,7 +318,7 @@ end
 ```
 
 #### mg_evalSolutionFunction
-This function allows you to call a solution function without knowing its namem thus granting people solving your task additional freedom. You can just call it like a normal function. You will get a false() pass output, if something goes wrong or no solution with fitting in- and outputs was found.  
+This function allows you to call a solution function without knowing its name thus granting people solving your task additional freedom. You can just call it like a normal function. You will get a false() pass output, if something goes wrong or no solution with fitting in- and outputs was found.  
 This function supports AST. **String patterns that should be avoided in file names can be given in form of a string array as the first input argument**.
 
 ```matlab
