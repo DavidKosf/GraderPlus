@@ -116,7 +116,7 @@ Returns a struct with the following fields. If no plot exists, fields will be em
 |xLabel|string|Label of x axis|yGrid|bool|true() when y axis grid is active|
 |yLabel|string|Label of y axis|zGrid|bool|true() when z axis grid is active|
 |zLabel|string|Label of z axis|lines|nx1 line|Array of existing [lines](https://www.mathworks.com/help/matlab/ref/matlab.graphics.primitive.line-properties.html)|
-|xLimits|1x2 vector|Limit vector [min max] of x axis|linecount|int|Amount of drawn lines/graphs|
+|xLimits|1x2 vector|Limit vector [min max] of x axis|lineCount|int|Amount of drawn lines/graphs|
 |yLimits|1x2 vector|Limit vector [min max] of y axis|legend|1x1 legend|Legend object|
 |zLimits|1x2 vector|Limit vector [min max] of z axis|legendAvailable|bool|true() when legend exists|
 |xScale|string|Information about the x axis scale|legendTitle|string|Title of legend as string|
