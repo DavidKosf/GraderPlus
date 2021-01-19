@@ -1,8 +1,8 @@
 # Matlab-Grader-Framework
-This is a collection of standalone functions that can be integrated into MATLAB®-Grader tasks to improve the writing of test code. It allows for more diverse tests, easier test creation and more freedom while solving. 
-Please keep in mind that this library was created "as needed". It is not guranteed to be bug free.  
+This is a collection of standalone functions that can be integrated into MATLAB®-Grader tasks to improve the writing of test code. It allows for more diverse tests, easier test creation and more empowers the task creator to give the students more freedom in their solutions. 
+Please keep in mind that this library is provided "as is" without warranty of any kind.  
    
-If you are missing something or have ideas for stuff to improve, get in touch, write an [eMail](mailto:david.kosfelder@tu-dortmund.de).
+If you are missing something or have ideas for improvements, get in touch, write an [eMail](mailto:david.kosfelder@tu-dortmund.de).
 
 ## Overview
 * [General information](#general-information)
@@ -34,19 +34,20 @@ If you are missing something or have ideas for stuff to improve, get in touch, w
     * [mg_evalSolutionFunction](#mg_evalSolutionFunction)
   
 ## General information
-The provided test function library was developed during the funded project "Feedback!" of the faculty BCI at TU Dortmund University in Germany. 
+The library code was developed during the funded QVM project "Feedback!" of the EiP Team at the faculty BCI at TU Dortmund University in Germany. 
 
 ### Integration
-Every file is a standalone and provides a specific functionality to test MATLAB Grader tasks. Therefore the files that shall be used in the test code must be uploaded as an additional file to the MATLAB®-Grader task. Afterwards, you can call these functions in code based tests of the task.
+Every file works standalone and provides a specific functionality to test MATLAB Grader tasks. The files that shall be used in the test code must be uploaded as an additional file to the MATLAB®-Grader task. Afterwards, you can call the library functions the test code of a MATLAB®-Grader task.
 ### Function and script based solutions
 MATLAB®-Grader differentiates between functions and scripts as solutions. Therefore, some of the functions only work in script other in function environments.
 ### Function Naming
-All names of the provided functions are prefixed with "mg_". This is important as we internally use reflection to search for functions that were provided in the solution code by the student (see mg_isFunction.m). The functions prefixed with "mg_" are exclude in the default case. If you use helper functions that shall not interfere with the reflection of the solution code you can either prefix your functions with "mg_" or you can use an overload of the XXX function that also filters out your internal functions.
+All names of the provided functions are prefixed with "mg_". This is important as we internally use reflection to search for functions that were provided in the solution code by the student (see mg_isFunction.m). The functions prefixed with "mg_" are exclude in the default case. If you use helper functions that shall not interfere with the reflection of the solution code you can either prefix your functions with "mg_" or you can use an overload of the provided functions that extends the filter functionality and by this allows to also exclude your internal functions.
 
 ## Use cases
 TODO: Link examples of Demo Course and shortly describe the problem and how to solve it with this library.
 
 ## Functions
+The remaining text will describe the functions of the MATLAB®-Grader framework in more detail.
 
 ### Failing or completing a test
 
@@ -63,7 +64,7 @@ In this case it fails with a test containing the message "some text".
 mg_setTestSatus(false(), "some text");
 ```
 #### mg_multiText
-Returns a formatted string. The base string can contain "%s" which will be replaced by the following input strings. The base string will be repeated once for every following input and create a new line.
+Returns a formatted string that is duplicated several times. The base string may contain placeholders like "%s" which will be replaced by the input strings in the second argument. The base string will be repeated once for every element of the second argument on a new line.
 ```matlab
 mg_multiText("Variable %s is wrong.", "a", "b", "f")
 mg_multiText("Variable %s is wrong.", ["a", "b", "f"])
@@ -124,7 +125,7 @@ Returns a struct with the following fields. If no plot exists, fields will be em
 
 #### mg_isCurveInPlot
 
-This function allows you to search for a specified line in a plot that has been drawn by the solution code. Multiple lines are supported, but you can only search for one line at a time. The returned value is a bool that is true, if all required properties fit to at least one line in the graph. Only the properties that shall be checked need to be specified. Specification works via key-value as shown in the following example. An even number of inputs and at least two arguments must be given. For more information check out the [line](https://www.mathworks.com/help/matlab/ref/matlab.graphics.primitive.line-properties.html) object.
+This function allows you to search for a specified line in a plot that has been drawn by the solution code. Multiple lines are supported, but you can only search for one line at a time. The returned value is a bool that is true, if all required properties fit to at least one line in the graph. Only the properties that shall be checked need to be specified. Specification works via key-value arguments as shown in the following example. An even number of inputs and at least two arguments must be given. For more information check out the [line](https://www.mathworks.com/help/matlab/ref/matlab.graphics.primitive.line-properties.html) object.
 ```matlab
 % Checking for two lines in one graph
 A = mg_isCurveInPlot('XData', [0, 1, 2, 3], 'YData', [0, 1, 2, 9], 'Color', [0 0 1], 'LineStyle', '--'); % Example for a blue dashed parabola
@@ -184,7 +185,7 @@ mg_setTestStatus(pass, msg);
 ```
 
 #### mg_keywordsEither
-This function checks for the presence of at least one string of a set in the solution code. The input argument is a string array that contains the keywords that contains at least one keyword that is also part of the solution code. The first output argument is false, if no keyword was used. The second output argument is a string array contatining the keywords used in the solution code. The third argument is a string array contatining the keywords unused in the solution code. 
+This function checks for the presence of at least one string of a set in the solution code. The input argument is a string array that contains the keywords that contains at least one keyword that is also part of the solution code. The first output argument is false, if no keyword was used. The second output argument is a string array contatining the keywords used in the solution code. The third argument is a string array containing the keywords unused in the solution code. 
 This function supports AST. Filename patterns that should be avoided during reflection can be given as varargin inputs.
 ```matlab
 % Checking for sin, cos and tan
@@ -268,7 +269,7 @@ The outputs contains boolean flag, a string array of wrong and one of duped vari
   
 
 #### mg_compArrIgnDim
-In our course, it occured multiple times, that a solution was wrong, because the transposition was mismatched. Therefore, this function compares arrays regardless of their transposition. It also accepts a variable name as input (script based only).
+This function compares arrays regardless of their transposition. It also accepts a variable name as input (script based only). By this the tasks does not need to specifiy correct transposition of vectors anymore.
 
 ```matlab
 mg_setTestStatus( mg_compArrIgnTrans(a, [1,2,3,4]), "The Vector is wrong" );   % Only fails the test on false() inout
