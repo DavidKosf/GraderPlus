@@ -1,5 +1,5 @@
-# Matlab-Grader-Framework
-This is a collection of standalone functions that can be integrated into MATLAB®-Grader tasks to improve the writing of test code. It allows for more diverse tests, easier test creation and more empowers the task creator to give the students more freedom in their solutions. 
+# GraderPlus - A library for writing test code in MATLAB®-Grader
+GraderPlus is a collection of standalone functions that can be integrated into MATLAB®-Grader tasks to improve the writing of test code. It allows for more diverse tests, easier test creation. GraderPlus empowers the task creator to create problems that allow more diverse solutions. 
 Please keep in mind that this library is provided "as is" without warranty of any kind.  
    
 If you are missing something or have ideas for improvements, get in touch, write an [eMail](mailto:david.kosfelder@tu-dortmund.de).
@@ -34,24 +34,28 @@ If you are missing something or have ideas for improvements, get in touch, write
     * [mg_evalSolutionFunction](#mg_evalSolutionFunction)
   
 ## General information
-The library code was developed during the funded QVM project "Feedback!" of the EiP Team at the faculty BCI at TU Dortmund University in Germany. 
+The GraderPlus library code was developed during the funded QVM project "Feedback!" of the EiP Team at the faculty BCI at TU Dortmund University in Germany. 
+
+The main features of GraderPlus are:
+* Writing complex tests by using small helper functions.
+* Share variables between environments. (the solution, and each tests are in their own MATLAB environment)
+* Write test-code to check for correct content in plots.
 
 ### Integration
-Every file works standalone and provides a specific functionality to test MATLAB Grader tasks. The files that shall be used in the test code must be uploaded as an additional file to the MATLAB®-Grader task. Afterwards, you can call the library functions the test code of a MATLAB®-Grader task.
+Every file works standalone and provides a specific functionality to test MATLAB®-Grader tasks. The files that shall be used in the test code must be uploaded as an additional file in the web-frontend of MATLAB®-Grader. Afterwards, you can call the library functions in the test code of the MATLAB®-Grader task.
+
 ### Function and script based solutions
-MATLAB®-Grader differentiates between functions and scripts as solutions. Therefore, some of the functions only work in script other in function environments.
+The MATLAB®-Grader environment differentiates between functions and scripts as solutions. Therefore, some of the functions only work in script other in function environments.
+
 ### Function Naming
 All names of the provided functions are prefixed with "mg_". This is important as we internally use reflection to search for functions that were provided in the solution code by the student (see mg_isFunction.m). The functions prefixed with "mg_" are exclude in the default case. If you use helper functions that shall not interfere with the reflection of the solution code you can either prefix your functions with "mg_" or you can use an overload of the provided functions that extends the filter functionality and by this allows to also exclude your internal functions.
 
-## Use cases
-TODO: Link examples of Demo Course and shortly describe the problem and how to solve it with this library.
-
 ## Functions
-The remaining text will describe the functions of the MATLAB®-Grader framework in more detail.
+The remaining text will describe the functions provided by GraderPlus in more detail.
 
-### Failing or completing a test
+### Failing a test with a user-generated message 
 
-You can fail a test by generating an error. Furthermore this collection contains a wrapper.
+You can fail a test by generating an error. GraderPlus contains two methods, one that uses the MATLAB internal function error() to fail a test and another to generate a multiline string with repeats an error messages for multiple occurences.
 
 #### mg_setTestStatus
 Wrapper that changes a test status to fail if the condition is false and outputs the given error text.
