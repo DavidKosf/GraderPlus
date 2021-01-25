@@ -1,4 +1,4 @@
-%=== Matlab Grader Framework ===
+%=== GraderPlus ===
 %
 %Library for advanced testing in MATLAB® Grader 
 %Created by David Kosfelder 

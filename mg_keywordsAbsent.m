@@ -1,10 +1,4 @@
-% keywords (string array): keywords to check for using ML-Grader functions
-% varargin (strings): ignore matlab files used by grader containing any of the given
-% strings. Use this, if you upload own scripts/functions
-
-% all absent (logical): logical 1/0 if no given keyword is used
-% used (string array): forbidden but still used keywords
-%=== Matlab Grader Framework ===
+%=== GraderPlus ===
 %
 %Library for advanced testing in MATLAB® Grader 
 %Created by David Kosfelder 
