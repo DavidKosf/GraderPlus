@@ -92,6 +92,27 @@ function result = mg_isCurveInPlot(varargin)
     function isCorrect = isPropertyCorrect(line, property, desiredValue)
         value = get(line, property);
         
+        % Code for checking data regardless of orientation
+        if any(strcmp(property, ["XData", "YData", "ZData"]))
+            
+            transVal = value';
+            
+            % Size not correct
+            if any(size(value) == size(desiredValue))
+                isCorrect = all(abs(desiredValue-value) < 0.0001);
+            end
+            
+            
+            if any(size(transVal) ~= size(desiredValue))
+                isCorrect = all(abs(desiredValue-transVal) < 0.0001);
+            end
+            
+            if isCorrect == 1
+               return 
+            end
+            
+        end
+        
         if(any(size(value) ~= size(desiredValue)))
             isCorrect = 0;
             return
@@ -99,7 +120,7 @@ function result = mg_isCurveInPlot(varargin)
         
         % Double array? -> tolerance
         if isequal(class(desiredValue),'double') && isequal(class(value),'double')
-            isCorrect = all(abs(desiredValue-value) < 0.01);
+            isCorrect = all(abs(desiredValue-value) < 0.0001);
         else
             if all(value == desiredValue) == 0
                 isCorrect = 0;
