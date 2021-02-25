@@ -41,6 +41,68 @@ The main features of GraderPlus are:
 * Share variables between environments. (the solution, and each tests are in their own MATLAB environment)
 * Write test-code to check for correct content in plots.
 
+### Motivation
+MATLAB® Grader is an ouststanding addition to any course teaching MATLAB® programming. The instant feedback makes it easier for students to develop a fundamental understanding of the MATLAB® environtment. Adding Grader to our introduction course improved overall pariticipation and success. Before that, students had to program their solutions and contact us when they ran into issues. The Grader furthermore reduced the workload for our teaching staff as they did not have to analyze every submitted solution manually.  
+So why did we create the GraderPlus library?  
+As the course progressed, Grader was more and more incorporated. Creating suitable tasks and tests however began to get more difficult and sometimes seemingly impossible. Through trial and error we got insights into the internal mechanisms of the Grader. To make advanced testing easier for staff that did not really invest that much time into the platform, GraderPlus was created. The best example for that would be the case of testing different solution variables in one test. An example is given below.  
+
+<table>
+<tr>
+<th>MATLAB® Grader</th>
+<th>GraderPlus</th>
+</tr>
+<tr>
+<td>
+   
+```matlab
+message = "";
+
+% Testing for X
+try
+   assessVariableEqual('X',referenceVariables.X);
+catch ME
+   message = message + "Variable X is not correct\n";
+end
+
+% Testing for Y
+try
+   assessVariableEqual('Y',referenceVariables.Y);
+catch ME
+   message = message + "Variable Z is not correct\n";
+end
+
+% Testing for Z
+try
+   assessVariableEqual('Z',referenceVariables.Z);
+catch ME
+   message = message + "Variable Z is not correct\n";
+end
+
+% Failing the test if any variable has a worng value
+if ~strcmp(message, "")
+   error(message, '');
+end
+```
+</td>
+<td>
+
+```matlab
+% Testing for X, Y and Z
+[pass, wrong] = mg_equalsStrictOrder(["X", "Y", "Z"]);
+
+% Creating an error message
+message = mg_multiText("Variable %s is not correct", wrong);
+
+% Failing the test and displaying the message,
+% if any variable has a wrong value
+mg_setTestStatus(pass, message);
+```
+
+</td>
+</tr>
+</table>
+
+
 ### Integration
 Every file works standalone and provides a specific functionality to test MATLAB®-Grader tasks. The files that shall be used in the test code must be uploaded as an additional file in the web-frontend of MATLAB®-Grader. Afterwards, you can call the library functions in the test code of the MATLAB®-Grader task.
 
