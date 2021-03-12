@@ -25,13 +25,10 @@
 %         to prevent your uploaded files from beeing scanned.
 % 
 % Outputs:
-%     pass (int)
-%         0
-%             No keywords ere used
-%         1
-%             At least one keyword was used
-%         2
-%             All keywords were used
+%     pass (bool)
+%         true: At least on keyword was used
+%         false: Not a single keyword was used
+%         
 %     used (string array)
 %         Returns all used keywords
 %     unused (string array)
@@ -41,7 +38,7 @@
 
 function [pass, used, unused] = mg_keywordsEither(keywords, varargin)
 
-    pass = 0;
+    pass = false();
     used = [];
     unused = [];
     
@@ -56,7 +53,7 @@ function [pass, used, unused] = mg_keywordsEither(keywords, varargin)
         try
             assessFunctionAbsence(keyword, 'FileName', filename);
         catch
-            pass = 1;
+            pass = true();
             isKWused = 1;
         end
         
@@ -69,7 +66,7 @@ function [pass, used, unused] = mg_keywordsEither(keywords, varargin)
     end
     
     if isempty(unused)
-        pass = 2;
+        pass = false();
     end
 
 end

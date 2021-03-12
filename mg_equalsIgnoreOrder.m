@@ -27,13 +27,11 @@
 %     varargin
 %         values that the variables should contain
 %Outputs:
-%   pass (int)
+%   pass (bool)
 %       0
 %           wrong values or dupes
 %       1
 %           all variables fit to the given references
-%       2
-%         not all variables were declared
 %   wrong (string array)
 %       names of variables that do not match the reference.
 %   dupes (string array)
@@ -49,7 +47,8 @@ function [pass, wrong, dupes] = mg_equalsIgnoreOrder(varNames, varargin)
     % Check if all Variables are used
     usedVars = ismember(varNames, evalin('caller','who'));
     if ~all(usedVars)
-        pass = 2;
+        pass = false();
+        wrong = varNames;
         return
     end
     for n = 1:length(varNames);

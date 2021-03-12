@@ -34,10 +34,15 @@ function [pass, varargout] = mg_evalSolutionFunction(toIgnore, varargin)
     filename = getMGFileName(toIgnore);
     fncname = filename(1:end-2);
     
-    fncin = nargin(fncname);
-    fncout = nargout(fncname);
+    try
+        fncin = nargin(fncname);
+        fncout = nargout(fncname);
+    catch
+        pass = false();
+        varargout = cell(1, thisout);
+    end
     
-    thisin = nargin;
+    thisin = nargin-1;
     thisout = nargout-1;
     
     % check required and given output and input dimension
